@@ -445,6 +445,20 @@
    Lightbox
 --------------------------------------------------------- */
 
+/* Google Drive 圖片尺寸 */
+function getDriveImageUrl(url, width) {
+  if (!url) return '';
+
+  if (/[?&]sz=w\d+/i.test(url)) {
+    return url.replace(
+      /([?&]sz=)w\d+/i,
+      '$1w' + width
+    );
+  }
+
+  return url + '&sz=w' + width;
+}
+   
 let lightboxImages = [];
 let lightboxIndex = 0;
 let touchStartX = 0;
@@ -660,8 +674,7 @@ function showLightboxImage() {
 
 
   img.src =
-    image.imageUrl;
-
+     getDriveImageUrl(image.imageUrl, 1600);
 
   img.alt =
     image.name || '平面攝影';
@@ -941,8 +954,8 @@ function resizeAllMasonryItems() {
         const img =
           document.createElement('img');
 
-        img.src =
-          image.imageUrl;
+         img.src =
+            getDriveImageUrl(image.imageUrl, 600);
 
         img.alt =
           (album.title || '平面攝影') +
