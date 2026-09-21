@@ -225,7 +225,17 @@ const SHEET_URLS = {
       return b;
     };
     container.appendChild(make('全部作品', '*', true));
-    groups.forEach(g => container.appendChild(make(g.category, g.category, false)));
+    groups.forEach(g => container.appendChild(make(g.category, g.category, false))
+   );
+
+     /* 平面攝影：獨立作品頁 */
+const photoLink = document.createElement('a');
+
+photoLink.className = 'filter-btn photo-link';
+photoLink.href = './photography/';
+photoLink.textContent = '平面攝影';
+
+container.appendChild(photoLink);     
   }
 
   function renderWorksPreview(container, items) {
