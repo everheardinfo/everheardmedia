@@ -26,6 +26,9 @@ const SHEET_URLS = {
 
   // values 工作表（理念卡清單：一列一張卡）的 CSV 發布網址
   values: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQmC7NS61sgE2cjafVEh3-rMfiA570Zt5_QELoG6selEa5-FMlOFrOmZxRqjcvzcwmCrwW1e1BOYNzP/pub?gid=582755197&single=true&output=csv',
+  
+  //photo_albums 工作表的 CSV 發布網址
+  photo_albums: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQmC7NS61sgE2cjafVEh3-rMfiA570Zt5_QELoG6selEa5-FMlOFrOmZxRqjcvzcwmCrwW1e1BOYNzP/pub?gid=811348005&single=true&output=csv'
 };
 /* ========================================================================== */
 
