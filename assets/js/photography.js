@@ -441,8 +441,7 @@
      載入單一相簿
   ------------------------------ */
 
-   function resizeMasonryItem(item) {
-      /* ---------------------------------------------------------
+   /* ---------------------------------------------------------
    Lightbox
 --------------------------------------------------------- */
 
@@ -742,12 +741,13 @@ function changeLightbox(direction) {
 
   showLightboxImage();
 }
+   
+   function resizeMasonryItem(item) {
+      const grid = document.getElementById('photo-gallery');
       
-  const grid = document.getElementById('photo-gallery');
-
-  if (!grid || !item) return;
-
-  const image = item.querySelector('img');
+      if (!grid || !item) return;
+      
+      const image = item.querySelector('img');
 
   if (!image) return;
 
