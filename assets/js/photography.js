@@ -441,6 +441,44 @@
      載入單一相簿
   ------------------------------ */
 
+   function resizeMasonryItem(item) {
+  const grid = document.getElementById('photo-gallery');
+
+  if (!grid || !item) return;
+
+  const image = item.querySelector('img');
+
+  if (!image) return;
+
+  const styles = window.getComputedStyle(grid);
+
+  const rowHeight =
+    parseFloat(styles.getPropertyValue('grid-auto-rows'));
+
+  const gap =
+    parseFloat(styles.getPropertyValue('row-gap'));
+
+  const imageHeight =
+    image.getBoundingClientRect().height;
+
+  const span = Math.ceil(
+    (imageHeight + gap) /
+    (rowHeight + gap)
+  );
+
+  item.style.gridRowEnd =
+    'span ' + span;
+}
+
+
+function resizeAllMasonryItems() {
+  document
+    .querySelectorAll('.photo-gallery__item')
+    .forEach(function (item) {
+      resizeMasonryItem(item);
+    });
+}
+   
   async function loadPhotoGallery() {
 
     const gallery =
