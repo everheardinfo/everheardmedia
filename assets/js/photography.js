@@ -942,64 +942,220 @@ function resizeAllMasonryItems() {
 
 
       /* 6. 依 001 → 040 順序產生照片 */
-      images.forEach(function (image, index) {
+/* ---------------------------------------------
+   分批載入照片
+   第一次 12 張，之後每次 6 張
+--------------------------------------------- */
 
-        const figure =
-          document.createElement('figure');
+const INITIAL_BATCH = 12;
+const NEXT_BATCH = 6;
 
-        figure.className =
-          'photo-gallery__item';
-
-
-        const img =
-          document.createElement('img');
-
-         img.src =
-            getDriveImageUrl(image.imageUrl, 600);
-
-        img.alt =
-          (album.title || '平面攝影') +
-          ' ' +
-          String(index + 1).padStart(3, '0');
-
-        /* 前 6 張先載入 */
-        img.loading =
-          index < 6
-            ? 'eager'
-            : 'lazy';
-
-        img.decoding =
-          'async';
-
-         img.addEventListener(
-            'click',
-            function () {
-               openLightbox(index);
-            }
-         );
+let renderedCount = 0;
 
 
-        figure.appendChild(img);
-         
-         gallery.appendChild(figure);
-         
-         img.addEventListener('load', function () {
-         
-            resizeMasonryItem(figure);
-         });
-         
-         if (img.complete) {
-            requestAnimationFrame(function () {
-               resizeMasonryItem(figure);
-            });
-         }
-      });
+/* 建立下一批照片 */
+function renderPhotoBatch(amount) {
+
+  const end =
+    Math.min(
+      renderedCount + amount,
+      images.length
+    );
 
 
-      /* 7. 顯示照片數量 */
-      statusEl.textContent =
-        images.length + ' 張照片';
+  for (
+    let index = renderedCount;
+    index < end;
+    index++
+  ) {
 
+    const image = images[index];
+
+
+    const figure =
+      document.createElement('figure');
+
+    figure.className =
+      'photo-gallery__item';
+
+
+    const img =
+      document.createElement('img');
+
+
+    /* 作品牆只使用 w600 */
+    img.src =
+      getDriveImageUrl(
+        image.imageUrl,
+        600
+      );
+
+
+    img.alt =
+      (album.title || '平面攝影') +
+      ' ' +
+      String(index + 1).padStart(3, '0');
+
+
+    /* 最前面幾張優先載入 */
+    img.loading =
+      index < 6
+        ? 'eager'
+        : 'lazy';
+
+
+    img.decoding =
+      'async';
+
+
+    /* 點擊後開啟 Lightbox */
+    img.addEventListener(
+      'click',
+      function () {
+        openLightbox(index);
+      }
+    );
+
+
+    figure.appendChild(img);
+
+    gallery.appendChild(figure);
+
+
+    /* 圖片完成後計算 Masonry 高度 */
+    img.addEventListener(
+      'load',
+      function () {
+        resizeMasonryItem(figure);
+      }
+    );
+
+
+    if (img.complete) {
+
+      requestAnimationFrame(
+        function () {
+          resizeMasonryItem(figure);
+        }
+      );
+
+    }
+  }
+
+
+  renderedCount = end;
+
+
+  /* 更新照片數量 */
+  if (renderedCount < images.length) {
+
+    statusEl.textContent =
+      '已載入 ' +
+      renderedCount +
+      ' / ' +
+      images.length +
+      ' 張照片';
+
+  } else {
+
+    statusEl.textContent =
+      images.length +
+      ' 張照片';
+
+  }
+}
+
+
+/* 第一次先顯示 12 張 */
+renderPhotoBatch(INITIAL_BATCH);
+
+
+/* ---------------------------------------------
+   接近底部時，自動再載入 6 張
+--------------------------------------------- */
+
+const loadMoreTrigger =
+  document.createElement('div');
+
+loadMoreTrigger.className =
+  'photo-gallery__load-more-trigger';
+
+loadMoreTrigger.setAttribute(
+  'aria-hidden',
+  'true'
+);
+
+loadMoreTrigger.style.height =
+  '1px';
+
+gallery.after(loadMoreTrigger);
+
+
+const observer =
+  new IntersectionObserver(
+    function (entries) {
+
+      entries.forEach(
+        function (entry) {
+
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+
+          /* 已全部載完 */
+          if (
+            renderedCount >=
+            images.length
+          ) {
+
+            observer.disconnect();
+
+            loadMoreTrigger.remove();
+
+            return;
+          }
+
+
+          /* 再載入 6 張 */
+          renderPhotoBatch(
+            NEXT_BATCH
+          );
+
+
+          /* 全部載完後停止監看 */
+          if (
+            renderedCount >=
+            images.length
+          ) {
+
+            observer.disconnect();
+
+            loadMoreTrigger.remove();
+
+          }
+
+        }
+      );
+
+    },
+
+    {
+      /*
+       * 還沒真的滑到底，
+       * 距離底部約 600px 就先開始載下一批
+       */
+      rootMargin:
+        '600px 0px 600px 0px',
+
+      threshold: 0
+    }
+  );
+
+
+observer.observe(
+  loadMoreTrigger
+);
 
     } catch (error) {
 
