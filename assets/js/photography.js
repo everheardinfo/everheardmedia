@@ -703,5 +703,16 @@ function resizeAllMasonryItems() {
 
     loadPhotoGallery();
   }
+   let masonryResizeTimer;
+   
+   window.addEventListener('resize', function () {
+      
+      clearTimeout(masonryResizeTimer);
+      
+      masonryResizeTimer = setTimeout(function () {
+         resizeAllMasonryItems();
+      }, 150);
 
+});
+   
 })();
