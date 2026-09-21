@@ -1019,11 +1019,14 @@ a.contact-item:hover { border-color: var(--c-accent); }
 .photo-gallery {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 8px;
   gap: 12px;
+  align-items: start;
 }
 
 .photo-gallery__item {
   margin: 0;
+  overflow: hidden;
 }
 
 .photo-gallery__item img {
