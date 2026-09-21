@@ -442,6 +442,307 @@
   ------------------------------ */
 
    function resizeMasonryItem(item) {
+      /* ---------------------------------------------------------
+   Lightbox
+--------------------------------------------------------- */
+
+let lightboxImages = [];
+let lightboxIndex = 0;
+let touchStartX = 0;
+
+
+function createLightbox() {
+
+  if (document.getElementById('photo-lightbox')) {
+    return;
+  }
+
+
+  const lightbox =
+    document.createElement('div');
+
+  lightbox.id = 'photo-lightbox';
+  lightbox.className = 'photo-lightbox';
+
+  lightbox.innerHTML = `
+    <button
+      class="photo-lightbox__close"
+      type="button"
+      aria-label="關閉照片">
+      ×
+    </button>
+
+    <button
+      class="photo-lightbox__prev"
+      type="button"
+      aria-label="上一張照片">
+      ‹
+    </button>
+
+    <img
+      class="photo-lightbox__image"
+      alt="">
+
+    <button
+      class="photo-lightbox__next"
+      type="button"
+      aria-label="下一張照片">
+      ›
+    </button>
+
+    <div class="photo-lightbox__counter"></div>
+  `;
+
+
+  document.body.appendChild(lightbox);
+
+
+  const closeBtn =
+    lightbox.querySelector(
+      '.photo-lightbox__close'
+    );
+
+  const prevBtn =
+    lightbox.querySelector(
+      '.photo-lightbox__prev'
+    );
+
+  const nextBtn =
+    lightbox.querySelector(
+      '.photo-lightbox__next'
+    );
+
+
+  closeBtn.addEventListener(
+    'click',
+    closeLightbox
+  );
+
+
+  prevBtn.addEventListener(
+    'click',
+    function () {
+      changeLightbox(-1);
+    }
+  );
+
+
+  nextBtn.addEventListener(
+    'click',
+    function () {
+      changeLightbox(1);
+    }
+  );
+
+
+  /* 點黑色背景關閉 */
+  lightbox.addEventListener(
+    'click',
+    function (event) {
+
+      if (event.target === lightbox) {
+        closeLightbox();
+      }
+
+    }
+  );
+
+
+  /* 手機滑動 */
+  lightbox.addEventListener(
+    'touchstart',
+    function (event) {
+
+      touchStartX =
+        event.changedTouches[0].screenX;
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  lightbox.addEventListener(
+    'touchend',
+    function (event) {
+
+      const touchEndX =
+        event.changedTouches[0].screenX;
+
+      const distance =
+        touchEndX - touchStartX;
+
+
+      if (Math.abs(distance) < 50) {
+        return;
+      }
+
+
+      if (distance < 0) {
+
+        changeLightbox(1);
+
+      } else {
+
+        changeLightbox(-1);
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  /* 鍵盤控制 */
+  document.addEventListener(
+    'keydown',
+    function (event) {
+
+      if (
+        !lightbox.classList.contains(
+          'is-open'
+        )
+      ) {
+        return;
+      }
+
+
+      if (event.key === 'Escape') {
+        closeLightbox();
+      }
+
+
+      if (event.key === 'ArrowLeft') {
+        changeLightbox(-1);
+      }
+
+
+      if (event.key === 'ArrowRight') {
+        changeLightbox(1);
+      }
+
+    }
+  );
+}
+
+
+function showLightboxImage() {
+
+  const lightbox =
+    document.getElementById(
+      'photo-lightbox'
+    );
+
+  if (
+    !lightbox ||
+    !lightboxImages.length
+  ) {
+    return;
+  }
+
+
+  const image =
+    lightboxImages[lightboxIndex];
+
+
+  const img =
+    lightbox.querySelector(
+      '.photo-lightbox__image'
+    );
+
+
+  const counter =
+    lightbox.querySelector(
+      '.photo-lightbox__counter'
+    );
+
+
+  img.src =
+    image.imageUrl;
+
+
+  img.alt =
+    image.name || '平面攝影';
+
+
+  counter.textContent =
+    (lightboxIndex + 1) +
+    ' / ' +
+    lightboxImages.length;
+}
+
+
+function openLightbox(index) {
+
+  const lightbox =
+    document.getElementById(
+      'photo-lightbox'
+    );
+
+
+  if (!lightbox) return;
+
+
+  lightboxIndex = index;
+
+  showLightboxImage();
+
+
+  lightbox.classList.add(
+    'is-open'
+  );
+
+
+  document.body.classList.add(
+    'lightbox-open'
+  );
+}
+
+
+function closeLightbox() {
+
+  const lightbox =
+    document.getElementById(
+      'photo-lightbox'
+    );
+
+
+  if (!lightbox) return;
+
+
+  lightbox.classList.remove(
+    'is-open'
+  );
+
+
+  document.body.classList.remove(
+    'lightbox-open'
+  );
+}
+
+
+function changeLightbox(direction) {
+
+  if (!lightboxImages.length) {
+    return;
+  }
+
+
+  lightboxIndex =
+    (
+      lightboxIndex +
+      direction +
+      lightboxImages.length
+    ) %
+    lightboxImages.length;
+
+
+  showLightboxImage();
+}
+      
   const grid = document.getElementById('photo-gallery');
 
   if (!grid || !item) return;
@@ -612,6 +913,10 @@ function resizeAllMasonryItems() {
         driveData.images || [];
 
 
+       lightboxImages = images;
+       
+       createLightbox();
+
       if (!images.length) {
         statusEl.textContent =
           '此相簿目前沒有照片。';
@@ -653,12 +958,23 @@ function resizeAllMasonryItems() {
         img.decoding =
           'async';
 
+         img.addEventListener(
+            'click',
+            function () {
+               openLightbox(index);
+            }
+         );
+
 
         figure.appendChild(img);
+         
          gallery.appendChild(figure);
+         
          img.addEventListener('load', function () {
+         
             resizeMasonryItem(figure);
          });
+         
          if (img.complete) {
             requestAnimationFrame(function () {
                resizeMasonryItem(figure);
