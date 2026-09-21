@@ -655,8 +655,15 @@ function resizeAllMasonryItems() {
 
 
         figure.appendChild(img);
-
-        gallery.appendChild(figure);
+         gallery.appendChild(figure);
+         img.addEventListener('load', function () {
+            resizeMasonryItem(figure);
+         });
+         if (img.complete) {
+            requestAnimationFrame(function () {
+               resizeMasonryItem(figure);
+            });
+         }
       });
 
 
