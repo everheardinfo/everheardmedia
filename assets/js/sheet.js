@@ -233,7 +233,7 @@ const photoLink = document.createElement('a');
 
 photoLink.className = 'filter-btn photo-link';
 photoLink.href = './photography/';
-photoLink.textContent = '平面攝影';
+photoLink.textContent = '平面攝影｜活動紀實';
 
 container.appendChild(photoLink);     
   }
