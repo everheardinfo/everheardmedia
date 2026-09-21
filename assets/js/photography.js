@@ -674,7 +674,10 @@ function showLightboxImage() {
 
 
   img.src =
-     getDriveImageUrl(image.imageUrl, 1200);
+     getDriveImageUrl(
+        image.imageUrl,
+        galleryImageWidth
+        );
 
   img.alt =
     image.name || '平面攝影';
@@ -985,10 +988,10 @@ function renderPhotoBatch(amount) {
 
     /* 作品牆只使用 w600 */
     img.src =
-      getDriveImageUrl(
-        image.imageUrl,
-        600
-      );
+      const galleryImageWidth =
+       window.matchMedia('(max-width: 600px)').matches
+       ? 480
+       : 600;
 
 
     img.alt =
@@ -999,7 +1002,7 @@ function renderPhotoBatch(amount) {
 
     /* 最前面幾張優先載入 */
     img.loading =
-      index < 6
+      index < 3
         ? 'eager'
         : 'lazy';
 
