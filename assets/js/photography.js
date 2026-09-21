@@ -337,7 +337,7 @@
 
   /* photo_albums Google Sheet CSV */
   const GALLERY_CSV_URL =
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQmC7NS61sgE2cjafVEh3-rMfiA570Zt5_QELoG6se1Ea5-FM1OFr0mZxRqjcvzcwmCrwW1e1BOYNzP/pub?gid=811348005&single=true&output=csv';
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQmC7NS61sgE2cjafVEh3-rMfiA570Zt5_QELoG6selEa5-FMlOFrOmZxRqjcvzcwmCrwW1e1BOYNzP/pub?gid=811348005&single=true&output=csv';
 
   /* Google Drive Apps Script */
   const GALLERY_API_URL =
