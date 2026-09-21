@@ -674,7 +674,7 @@ function showLightboxImage() {
 
 
   img.src =
-     getDriveImageUrl(image.imageUrl, 1600);
+     getDriveImageUrl(image.imageUrl, 1200);
 
   img.alt =
     image.name || '平面攝影';
