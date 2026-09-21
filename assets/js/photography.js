@@ -699,32 +699,27 @@ function showLightboxImage() {
       '.photo-lightbox__counter'
     );
 
-
-  img.src =
-     getDriveImageUrl(
-        image.imageUrl,
-        galleryImageWidth
-        1600
-     );
-
-  img.alt =
-    image.name || '平面攝影';
-
-
-  counter.textContent =
-    (lightboxIndex + 1) +
-    ' / ' +
-    lightboxImages.length;
-}
+   img.src =
+      getDriveImageUrl(
+         image.imageUrl,
+         1600
+      );
+   img.alt =
+    image.name || '平面攝影｜活動紀實';
    
-/* 背景預載下一張 */
-preloadNextLightboxImage();
-
-function openLightbox(index) {
-
-  const lightbox =
-    document.getElementById(
-      'photo-lightbox'
+   counter.textContent =
+      (lightboxIndex + 1) +
+      ' / ' +
+      lightboxImages.length;
+   
+   /* 背景預載下一張 */
+   preloadNextLightboxImage();
+   }
+   
+   function openLightbox(index) {
+      const lightbox =
+         document.getElementById(
+            'photo-lightbox'
     );
 
 
