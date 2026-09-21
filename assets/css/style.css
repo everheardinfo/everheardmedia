@@ -1192,3 +1192,11 @@ body.lightbox-open {
   }
 
 }
+
+/* 平面攝影入口按鈕 */
+.photo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
