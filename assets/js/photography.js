@@ -326,3 +326,337 @@
   }
 
 })();
+
+
+/* =========================================================
+   Photography Gallery｜單一活動相簿
+========================================================= */
+
+(function () {
+  'use strict';
+
+  /* photo_albums Google Sheet CSV */
+  const GALLERY_CSV_URL =
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQmC7NS61sgE2cjafVEh3-rMfiA570Zt5_QELoG6se1Ea5-FM1OFr0mZxRqjcvzcwmCrwW1e1BOYNzP/pub?gid=811348005&single=true&output=csv';
+
+  /* Google Drive Apps Script */
+  const GALLERY_API_URL =
+    'https://script.google.com/macros/s/AKfycbzotwmQP9U2Vzqg9nsy3MzpuNPLzP3IUSY1uG_qY0InLyjNZRhbgNKyGyyOfQ9e4wQ2/exec';
+
+
+  /* ------------------------------
+     CSV 解析
+  ------------------------------ */
+
+  function parseGalleryCSV(text) {
+    const rows = [];
+    let row = [];
+    let field = '';
+    let inQuotes = false;
+
+    const src = text.replace(/^\uFEFF/, '');
+
+    for (let i = 0; i < src.length; i++) {
+      const ch = src[i];
+
+      if (inQuotes) {
+        if (ch === '"') {
+          if (src[i + 1] === '"') {
+            field += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          field += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+
+        } else if (ch === ',') {
+          row.push(field);
+          field = '';
+
+        } else if (ch === '\n' || ch === '\r') {
+          if (ch === '\r' && src[i + 1] === '\n') {
+            i++;
+          }
+
+          row.push(field);
+          rows.push(row);
+
+          row = [];
+          field = '';
+
+        } else {
+          field += ch;
+        }
+      }
+    }
+
+    if (field !== '' || row.length) {
+      row.push(field);
+      rows.push(row);
+    }
+
+    return rows;
+  }
+
+
+  function galleryRowsToObjects(rows) {
+    if (!rows.length) return [];
+
+    const headers = rows[0].map(function (header) {
+      return header.trim().toLowerCase();
+    });
+
+    return rows.slice(1).map(function (cols) {
+      const item = {};
+
+      headers.forEach(function (key, index) {
+        item[key] = (cols[index] || '').trim();
+      });
+
+      return item;
+    });
+  }
+
+
+  function galleryIsVisible(value) {
+    const v = String(value || '')
+      .trim()
+      .toLowerCase();
+
+    return (
+      v === 'true' ||
+      v === '1' ||
+      v === 'yes' ||
+      v === 'y'
+    );
+  }
+
+
+  /* ------------------------------
+     載入單一相簿
+  ------------------------------ */
+
+  async function loadPhotoGallery() {
+
+    const gallery =
+      document.getElementById('photo-gallery');
+
+    /* 如果不是 gallery.html，就不執行 */
+    if (!gallery) return;
+
+
+    const titleEl =
+      document.getElementById('gallery-title');
+
+    const dateEl =
+      document.getElementById('gallery-date');
+
+    const statusEl =
+      document.getElementById('gallery-status');
+
+
+    /* 取得網址中的 ?album=test-event */
+    const params =
+      new URLSearchParams(window.location.search);
+
+    const albumId =
+      params.get('album');
+
+
+    if (!albumId) {
+      titleEl.textContent = '找不到相簿';
+      statusEl.textContent = '網址缺少 album 參數。';
+      return;
+    }
+
+
+    try {
+
+      /* 1. 讀取 Google Sheet */
+      const sheetResponse =
+        await fetch(GALLERY_CSV_URL, {
+          cache: 'no-store'
+        });
+
+      if (!sheetResponse.ok) {
+        throw new Error(
+          'Google Sheet HTTP ' +
+          sheetResponse.status
+        );
+      }
+
+
+      const csvText =
+        await sheetResponse.text();
+
+      const albums =
+        galleryRowsToObjects(
+          parseGalleryCSV(csvText)
+        );
+
+
+      /* 2. 找出 test-event */
+      const album =
+        albums.find(function (item) {
+          return (
+            galleryIsVisible(item.show) &&
+            item.id === albumId
+          );
+        });
+
+
+      if (!album) {
+        titleEl.textContent = '找不到相簿';
+        statusEl.textContent =
+          '此相簿不存在或目前未公開。';
+        return;
+      }
+
+
+      /* 3. 顯示活動名稱與日期 */
+      titleEl.textContent =
+        album.title || '平面攝影';
+
+      dateEl.textContent =
+        album.date || '';
+
+      document.title =
+        (album.title || '平面攝影') +
+        '｜平面攝影｜有所耳聞有限公司';
+
+
+      if (!album.folder_id) {
+        throw new Error(
+          'Google Sheet 沒有 folder_id'
+        );
+      }
+
+
+      /* 4. 用 folder_id 呼叫 Apps Script */
+      const apiUrl =
+        GALLERY_API_URL +
+        '?folder=' +
+        encodeURIComponent(album.folder_id);
+
+
+      const driveResponse =
+        await fetch(apiUrl, {
+          cache: 'no-store'
+        });
+
+
+      if (!driveResponse.ok) {
+        throw new Error(
+          'Drive API HTTP ' +
+          driveResponse.status
+        );
+      }
+
+
+      const driveData =
+        await driveResponse.json();
+
+
+      if (!driveData.success) {
+        throw new Error(
+          driveData.error ||
+          'Google Drive 讀取失敗'
+        );
+      }
+
+
+      const images =
+        driveData.images || [];
+
+
+      if (!images.length) {
+        statusEl.textContent =
+          '此相簿目前沒有照片。';
+        return;
+      }
+
+
+      /* 5. 清空相簿區 */
+      gallery.innerHTML = '';
+
+
+      /* 6. 依 001 → 040 順序產生照片 */
+      images.forEach(function (image, index) {
+
+        const figure =
+          document.createElement('figure');
+
+        figure.className =
+          'photo-gallery__item';
+
+
+        const img =
+          document.createElement('img');
+
+        img.src =
+          image.imageUrl;
+
+        img.alt =
+          (album.title || '平面攝影') +
+          ' ' +
+          String(index + 1).padStart(3, '0');
+
+        /* 前 6 張先載入 */
+        img.loading =
+          index < 6
+            ? 'eager'
+            : 'lazy';
+
+        img.decoding =
+          'async';
+
+
+        figure.appendChild(img);
+
+        gallery.appendChild(figure);
+      });
+
+
+      /* 7. 顯示照片數量 */
+      statusEl.textContent =
+        images.length + ' 張照片';
+
+
+    } catch (error) {
+
+      console.error(
+        '[Photography Gallery]',
+        error
+      );
+
+      titleEl.textContent =
+        '相簿載入失敗';
+
+      statusEl.textContent =
+        '照片載入失敗，請稍後再試。';
+    }
+  }
+
+
+  /* ------------------------------
+     啟動
+  ------------------------------ */
+
+  if (document.readyState === 'loading') {
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      loadPhotoGallery
+    );
+
+  } else {
+
+    loadPhotoGallery();
+  }
+
+})();
