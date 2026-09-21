@@ -1,13 +1,463 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Photography｜有所耳聞有限公司</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>平面攝影｜有所耳聞有限公司</title>
+
+  <meta name="description"
+        content="有所耳聞有限公司平面攝影作品集，包含活動紀錄、商業攝影、品牌活動與人物攝影。">
+
+  <link rel="canonical"
+        href="https://everheardmedia.com/works/photography/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="有所耳聞有限公司">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:title" content="平面攝影｜有所耳聞有限公司">
+  <meta property="og:description"
+        content="活動紀錄、商業攝影、品牌活動與人物攝影作品。">
+  <meta property="og:url"
+        content="https://everheardmedia.com/works/photography/">
+  <meta property="og:image"
+        content="https://everheardmedia.com/assets/img/og-image.jpg">
+
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#14304a">
+
+  <link rel="icon"
+        href="../../assets/img/favicon.svg"
+        type="image/svg+xml">
+
+  <link rel="apple-touch-icon"
+        href="../../assets/img/apple-touch-icon.png">
+
+  <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap">
+
+  <link rel="stylesheet"
+        href="../../assets/css/style.css">
+
+  <style>
+
+    /* Photography 作品列表 */
+
+    .photo-projects {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px 24px;
+    }
+
+    .photo-project {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .photo-project__image {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #eeeeee;
+    }
+
+    .photo-project__image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+
+    .photo-project:hover .photo-project__image img {
+      transform: scale(1.025);
+    }
+
+    .photo-project__info {
+      padding-top: 12px;
+    }
+
+    .photo-project__title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .photo-project__meta {
+      margin: 4px 0 0;
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media (max-width: 900px) {
+
+      .photo-projects {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .photo-projects {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
-<h1>Photography</h1>
+<a class="skip-link" href="#main">
+  跳到主要內容
+</a>
+
+
+<header class="site-header">
+
+  <div class="wrap site-header__inner">
+
+    <a class="brand"
+       href="../../"
+       aria-label="有所耳聞有限公司 首頁">
+
+      <img class="brand__logo"
+           src="../../assets/img/logo-original.png"
+           alt="有所耳聞 Ever Heard Media"
+           width="400"
+           height="100">
+
+    </a>
+
+
+    <button class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="開啟選單">
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+
+    <nav class="nav"
+         id="site-nav"
+         aria-label="主要導覽">
+
+      <ul class="nav__list">
+
+        <li>
+          <a class="nav__link"
+             href="../../">
+            首頁
+          </a>
+        </li>
+
+        <li>
+          <a class="nav__link"
+             href="../"
+             aria-current="page">
+            影像作品
+          </a>
+        </li>
+
+        <li>
+          <a class="nav__link"
+             href="../../services/">
+            服務項目
+          </a>
+        </li>
+
+        <li>
+          <a class="nav__link"
+             href="../../about/">
+            關於我們
+          </a>
+        </li>
+
+        <li>
+          <a class="nav__link nav__link--cta"
+             href="../../contact/">
+            聯繫我們
+          </a>
+        </li>
+
+      </ul>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+
+<main id="main">
+
+
+  <!-- 頁面標題 -->
+
+  <section class="page-head">
+
+    <div class="wrap">
+
+      <p class="eyebrow">
+        PHOTOGRAPHY
+      </p>
+
+      <h1 class="page-head__title">
+        平面攝影
+      </h1>
+
+      <p class="page-head__sub">
+        精選平面攝影作品，記錄活動、人物與品牌現場的每一個瞬間。
+      </p>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Photography Projects -->
+
+  <section class="section section--tight">
+
+    <div class="wrap">
+
+      <div class="photo-projects">
+
+
+        <!-- 作品 01 -->
+
+        <a class="photo-project"
+           href="./event-a/">
+
+          <div class="photo-project__image">
+
+            <img
+              src="../../assets/img/photography/event-a-cover.webp"
+              alt="活動 A"
+              loading="lazy">
+
+          </div>
+
+          <div class="photo-project__info">
+
+            <h2 class="photo-project__title">
+              活動 A
+            </h2>
+
+            <p class="photo-project__meta">
+              2026
+            </p>
+
+          </div>
+
+        </a>
+
+
+
+        <!-- 作品 02 -->
+
+        <a class="photo-project"
+           href="./event-b/">
+
+          <div class="photo-project__image">
+
+            <img
+              src="../../assets/img/photography/event-b-cover.webp"
+              alt="活動 B"
+              loading="lazy">
+
+          </div>
+
+          <div class="photo-project__info">
+
+            <h2 class="photo-project__title">
+              活動 B
+            </h2>
+
+            <p class="photo-project__meta">
+              2026
+            </p>
+
+          </div>
+
+        </a>
+
+
+
+        <!-- 作品 03 -->
+
+        <a class="photo-project"
+           href="./event-c/">
+
+          <div class="photo-project__image">
+
+            <img
+              src="../../assets/img/photography/event-c-cover.webp"
+              alt="活動 C"
+              loading="lazy">
+
+          </div>
+
+          <div class="photo-project__info">
+
+            <h2 class="photo-project__title">
+              活動 C
+            </h2>
+
+            <p class="photo-project__meta">
+              2025
+            </p>
+
+          </div>
+
+        </a>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- CTA -->
+
+  <section class="cta">
+
+    <div class="wrap">
+
+      <h2 class="cta__title">
+        準備開始你的<br>
+        <span class="accent">影像專案</span>了嗎？
+      </h2>
+
+      <div class="cta__row">
+
+        <p class="cta__text">
+          告訴我們你的需求，我們將提供合適的拍攝方案與報價。
+          <span class="cta__badge">
+            免費諮詢｜快速回覆
+          </span>
+        </p>
+
+        <a class="btn btn--invert"
+           href="../../contact/">
+          聯繫我們
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+</main>
+
+
+
+<footer class="site-footer">
+
+  <div class="wrap">
+
+    <div class="footer__row">
+
+      <span>
+        有所耳聞有限公司｜統一編號 93548882
+      </span>
+
+      <span>
+        高雄市新興區民生一路56號22樓之3
+      </span>
+
+      <a href="tel:+886978221878">
+        +886(0)978221878
+      </a>
+
+      <a href="mailto:everheard.info@gmail.com">
+        everheard.info@gmail.com
+      </a>
+
+
+      <div class="footer-social">
+
+
+        <a href="https://lin.ee/8aMpENY"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="LINE">
+
+          <img
+            src="../../assets/img/line-logo.svg"
+            alt="LINE">
+
+        </a>
+
+
+        <a href="https://www.instagram.com/scorpiovin.nage"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+          <img
+            src="../../assets/img/instagram-logo.svg"
+            alt="Instagram">
+
+        </a>
+
+
+        <a href="https://www.youtube.com/@everheardinfo"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+          <img
+            src="../../assets/img/youtube-logo.svg"
+            alt="YouTube">
+
+        </a>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script
+  src="../../assets/js/main.js"
+  async>
+</script>
+
 
 </body>
 </html>
