@@ -464,6 +464,33 @@ let lightboxIndex = 0;
 let touchStartX = 0;
 
 
+function preloadNextLightboxImage() {
+
+  if (!lightboxImages.length) {
+    return;
+  }
+
+  const nextIndex =
+    (lightboxIndex + 1) %
+    lightboxImages.length;
+
+  const nextImage =
+    lightboxImages[nextIndex];
+
+  if (!nextImage) {
+    return;
+  }
+
+  const preload =
+    new Image();
+
+  preload.src =
+    getDriveImageUrl(
+      nextImage.imageUrl,
+      1600
+    );
+}
+
 function createLightbox() {
 
   if (document.getElementById('photo-lightbox')) {
@@ -677,7 +704,8 @@ function showLightboxImage() {
      getDriveImageUrl(
         image.imageUrl,
         galleryImageWidth
-        );
+        1600
+     );
 
   img.alt =
     image.name || '平面攝影';
@@ -688,7 +716,9 @@ function showLightboxImage() {
     ' / ' +
     lightboxImages.length;
 }
-
+   
+/* 背景預載下一張 */
+preloadNextLightboxImage();
 
 function openLightbox(index) {
 
