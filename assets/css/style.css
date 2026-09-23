@@ -914,6 +914,9 @@ a.contact-item:hover { border-color: var(--c-accent); }
 }
 
 .map-embed {
+  width: 100%;
+  grid-column: 1 / -1;
+
   margin-top: clamp(32px, 4vw, 56px);
   border: 1px solid var(--c-line);
   border-radius: var(--radius);
