@@ -1011,18 +1011,22 @@ function renderPhotoBatch(amount) {
       document.createElement('img');
 
 
-    /* 作品牆只使用 w600 */
-    img.src =
-      const galleryImageWidth =
-       window.matchMedia('(max-width: 600px)').matches
+   /* 作品牆：手機 w480，桌機 w600 */
+   const galleryImageWidth =
+     window.matchMedia('(max-width: 600px)').matches
        ? 480
        : 600;
-
-
-    img.alt =
-      (album.title || '平面攝影') +
-      ' ' +
-      String(index + 1).padStart(3, '0');
+   
+   img.src =
+     getDriveImageUrl(
+       image.imageUrl,
+       galleryImageWidth
+     );
+   
+       img.alt =
+         (album.title || '平面攝影') +
+         ' ' +
+         String(index + 1).padStart(3, '0');
 
 
     /* 最前面幾張優先載入 */
