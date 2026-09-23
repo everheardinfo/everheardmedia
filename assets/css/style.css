@@ -878,6 +878,9 @@ a.card:hover { border-color: var(--c-accent); }
   border: 1px solid var(--c-line);
   border-radius: var(--radius);
   transition: border-color .2s var(--ease);
+  min-width: 0;
+.contact-item > div {
+  min-width: 0;
 }
 a.contact-item:hover { border-color: var(--c-accent); }
 .contact-item__icon {
@@ -904,6 +907,10 @@ a.contact-item:hover { border-color: var(--c-accent); }
   font-weight: 700;
   line-height: 1.6;
   color: var(--c-ink);
+
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .map-embed {
