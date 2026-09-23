@@ -879,9 +879,12 @@ a.card:hover { border-color: var(--c-accent); }
   border-radius: var(--radius);
   transition: border-color .2s var(--ease);
   min-width: 0;
+}
+
 .contact-item > div {
   min-width: 0;
 }
+
 a.contact-item:hover { border-color: var(--c-accent); }
 .contact-item__icon {
   flex: 0 0 auto;
