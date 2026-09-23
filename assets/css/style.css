@@ -336,7 +336,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: 520px;
+  min-height: 700px;
   background: var(--c-deep);
   overflow: hidden;
 }
@@ -367,7 +367,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   width: 100%;
   max-width: var(--wrap);
   margin-inline: auto;
-  padding: 0 var(--pad-x) clamp(36px, 4vw, 52px);
+  padding: 0 var(--pad-x) clamp(44px, 5vw, 68px);
   color: #fff;
 }
 
@@ -380,7 +380,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .hero__title {
   font-weight: 900;
-  font-size: clamp(36px, 4vw, 60px);
+  font-size: clamp(40px, 7.8vw, 112px);
   line-height: 1.08;
   letter-spacing: -.01em;
 }
@@ -954,12 +954,12 @@ a.contact-item:hover { border-color: var(--c-accent); }
 @media (max-width: 1023px) {
   .svc-split { grid-template-columns: 1fr; gap: 36px; }
   .svc-row { grid-template-columns: 32px 150px minmax(0, 1fr); gap: 20px; }
-  .hero { min-height: 520px; }
+  .hero { min-height: 620px; }
 }
 
 /* 手機：Hero 固定較精簡高度 */
 @media (max-width: 767px) {
-  .hero { min-height: 440px; }
+  .hero { min-height: 80vh; }
   .hero__row { flex-direction: column; align-items: flex-start; gap: 26px; }
   .hero__sub { max-width: none; }
   .showreel__btn { width: 58px; height: 58px; }
