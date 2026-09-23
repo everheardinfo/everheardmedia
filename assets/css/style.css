@@ -1205,3 +1205,40 @@ body.lightbox-open {
   justify-content: center;
   text-decoration: none;
 }
+
+/* ==========================================
+   內頁 Hero
+   首頁不受影響
+   ========================================== */
+
+.subpage .hero {
+  min-height: 520px;
+}
+
+.subpage .hero__inner {
+  padding-bottom: clamp(36px, 4vw, 52px);
+}
+
+.subpage .hero__title {
+  font-size: clamp(36px, 4vw, 60px);
+}
+
+
+/* 平板 */
+@media (max-width: 1023px) {
+  .subpage .hero {
+    min-height: 480px;
+  }
+}
+
+
+/* 手機 */
+@media (max-width: 767px) {
+  .subpage .hero {
+    min-height: 440px;
+  }
+
+  .subpage .hero__title {
+    font-size: 36px;
+  }
+}
